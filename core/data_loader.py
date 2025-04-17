@@ -1,10 +1,14 @@
 import pandas as pd
 
-def load_data(file_path):
-    df = pd.read_csv(file_path, parse_dates=["date"])
-    df = df.sort_values("date")
+def load_data(path):
+    # Read CSV and parse the 'date' column
+    df = pd.read_csv(path, parse_dates=["date"])
     
-    # Filter only rows from the year 2014
-    df = df[df["date"].dt.year == 2014]
+    # Filter for only the year 2014
+    df = df[df["date"].dt.year == 2014].copy()
+    
+    # Standardize column names to Title Case (e.g., 'close' → 'Close')
+    df.columns = [col.strip().capitalize() for col in df.columns]
 
+    # Reset index for safety
     return df.reset_index(drop=True)
